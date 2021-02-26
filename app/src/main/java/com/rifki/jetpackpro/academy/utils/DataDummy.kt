@@ -1,6 +1,8 @@
 package com.rifki.jetpackpro.academy.utils
 
+import com.rifki.jetpackpro.academy.data.source.local.entity.ContentEntity
 import com.rifki.jetpackpro.academy.data.source.local.entity.CourseEntity
+import com.rifki.jetpackpro.academy.data.source.local.entity.CourseWithModule
 import com.rifki.jetpackpro.academy.data.source.local.entity.ModuleEntity
 import com.rifki.jetpackpro.academy.data.source.remote.response.ContentResponse
 import com.rifki.jetpackpro.academy.data.source.remote.response.CourseResponse
@@ -8,7 +10,7 @@ import com.rifki.jetpackpro.academy.data.source.remote.response.ModuleResponse
 
 object DataDummy {
 
-    fun generateDummyCourses(): ArrayList<CourseEntity> {
+    fun generateDummyCourses(): List<CourseEntity> {
 
         val courses = ArrayList<CourseEntity>()
 
@@ -45,7 +47,7 @@ object DataDummy {
         return courses
     }
 
-    fun generateDummyModules(courseId: String): ArrayList<ModuleEntity> {
+    fun generateDummyModules(courseId: String): List<ModuleEntity> {
 
         val modules = ArrayList<ModuleEntity>()
 
@@ -85,7 +87,9 @@ object DataDummy {
     }
 
     fun generateRemoteDummyCourses(): List<CourseResponse> {
+
         val courses = ArrayList<CourseResponse>()
+
         courses.add(CourseResponse("a14",
             "Menjadi Android Developer Expert",
             "Dicoding sebagai satu-satunya Google Authorized Training Partner di Indonesia telah melalui proses penyusunan kurikulum secara komprehensif. Semua modul telah diverifikasi langsung oleh Google untuk memastikan bahwa materi yang diajarkan relevan dan sesuai dengan kebutuhan industri digital saat ini. Peserta akan belajar membangun aplikasi Android dengan materi Testing, Debugging, Application, Application UX, Fundamental Application Components, Persistent Data Storage, dan Enhanced System Integration.",
@@ -115,7 +119,9 @@ object DataDummy {
 
 
     fun generateRemoteDummyModules(courseId: String): List<ModuleResponse> {
+
         val modules = ArrayList<ModuleResponse>()
+
         modules.add(ModuleResponse(
             "{$courseId}m1",
             courseId,
@@ -150,5 +156,20 @@ object DataDummy {
 
     fun generateRemoteDummyContent(moduleId: String): ContentResponse {
         return ContentResponse(moduleId, "This is a dummy content")
+    }
+
+    fun generateDummyCourseWithModules(course: CourseEntity, bookmarked: Boolean): CourseWithModule {
+        course.bookmarked = bookmarked
+        return CourseWithModule(course, generateDummyModules(course.courseId))
+    }
+
+    fun generateDummyContent(moduleId: String): ContentEntity {
+        return ContentEntity("This is a dummy content")
+    }
+
+    fun generateDummyModuleWithContent(courseId: String): ModuleEntity {
+        val moduleEntity = generateDummyModules(courseId)[0]
+        moduleEntity.contentEntity = generateDummyContent(moduleEntity.moduleId)
+        return moduleEntity
     }
 }

@@ -40,7 +40,6 @@ class BookmarkFragment : Fragment(), BookmarkFragmentCallback {
                 bookmarkAdapter.notifyDataSetChanged()
             })
 
-
             binding?.rvBookmark?.layoutManager = LinearLayoutManager(context)
             binding?.rvBookmark?.setHasFixedSize(true)
             binding?.rvBookmark?.adapter = bookmarkAdapter
