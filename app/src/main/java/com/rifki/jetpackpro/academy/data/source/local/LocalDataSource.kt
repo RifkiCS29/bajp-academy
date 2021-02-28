@@ -1,6 +1,7 @@
 package com.rifki.jetpackpro.academy.data.source.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.rifki.jetpackpro.academy.data.source.local.entity.CourseEntity
 import com.rifki.jetpackpro.academy.data.source.local.entity.CourseWithModule
 import com.rifki.jetpackpro.academy.data.source.local.entity.ModuleEntity
@@ -11,13 +12,17 @@ class LocalDataSource private constructor (private val mAcademyDao: AcademyDao) 
     companion object {
         private var INSTANCE: LocalDataSource? = null
 
-        fun getInstance(academyDao: AcademyDao): LocalDataSource =
-            INSTANCE ?: LocalDataSource(academyDao)
+        fun getInstance(academyDao: AcademyDao): LocalDataSource {
+            if (INSTANCE == null) {
+                INSTANCE = LocalDataSource(academyDao)
+            }
+            return INSTANCE as LocalDataSource
+        }
     }
 
-    fun getAllCourses(): LiveData<List<CourseEntity>> = mAcademyDao.getCourses()
+    fun getAllCourses(): DataSource.Factory<Int, CourseEntity> = mAcademyDao.getCourses()
 
-    fun getBookmarkedCourse(): LiveData<List<CourseEntity>> = mAcademyDao.getBookmarkedCourse()
+    fun getBookmarkedCourse(): DataSource.Factory<Int, CourseEntity> = mAcademyDao.getBookmarkedCourse()
 
     fun getCourseWithModules(courseId: String): LiveData<CourseWithModule> =
         mAcademyDao.getCourseWithModuleById(courseId)
